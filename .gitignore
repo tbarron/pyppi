@@ -1,5 +1,6 @@
 pypi.cfg
-.env
 DODO
 venv*
+TAGS
+.env
 __pycache__
