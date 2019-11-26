@@ -56,11 +56,11 @@ def cmkdir(path):
     Conditional mkdir. If the path does not exist, create it. Return True if
     the path was created, otherwise False.
     """
-    rval = False
-    if not tbx.exists(path, mode=755):
-        os.mkdir(path)
-        rval = True
-    return rval
+    if tbx.exists(path):
+        return False
+    else:
+        os.mkdir(path, mode=0o755)
+        return True
 
 
 # -----------------------------------------------------------------------------
