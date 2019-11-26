@@ -62,11 +62,35 @@ def test_read_cfg_file(tmpdir, fx_cfgfile):
 
 
 # -----------------------------------------------------------------------------
+def test_build_dirs_noroot(tmpdir, fx_cfgfile):
     """
+    Make sure function build_dirs() creates the root directory
     """
     pytest.dbgfunc()
+    data = fx_cfgfile
+    root = tmpdir.join("pypi")
+    assert not root.exists()
+    pmain.build_dirs(data)                                            # payload
+    assert root.exists()
+    for pkg in data['pkglist']:
+        pkgdir = root.join(pkg)
+        assert pkgdir.isdir()
 
 
+# -----------------------------------------------------------------------------
+def test_build_dirs_withroot(tmpdir, fx_cfgfile):
+    """
+    Make sure function build_dirs() runs successfully if root exists
+    """
+    pytest.dbgfunc()
+    data = fx_cfgfile
+    root = tmpdir.join("pypi")
+    root.ensure(dir=True)
+    pmain.build_dirs(data)                                            # payload
+    assert root.isdir()
+    for pkg in data['pkglist']:
+        pkgdir = root.join(pkg)
+        assert pkgdir.isdir()
 
 
 # -----------------------------------------------------------------------------
