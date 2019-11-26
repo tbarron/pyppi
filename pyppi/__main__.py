@@ -51,16 +51,8 @@ def conditional_debug(debug_option):
 
 
 # -----------------------------------------------------------------------------
-def cmkdir(path):
     """
-    Conditional mkdir. If the path does not exist, create it. Return True if
-    the path was created, otherwise False.
     """
-    if tbx.exists(path):
-        return False
-    else:
-        os.mkdir(path, mode=0o755)
-        return True
 
 
 # -----------------------------------------------------------------------------
