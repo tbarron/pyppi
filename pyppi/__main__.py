@@ -7,6 +7,7 @@ from docopt_dispatch import dispatch
 import os
 import pdb
 from pyppi import version
+from py.path import local
 import re
 import tbx
 
@@ -21,14 +22,7 @@ def pyppi_build(**kw):
     filename = kw['FILENAME']
     print("Reading config file {}".format(filename))
     cfg = read_cfg_file(filename)
-
-    root = cfg['root']
-    cmkdir(root)
-
-    for pkg in cfg['pkglist']:
-        dpath = "{}/{}".format(cfg['root'], pkg)
-        print(dpath)
-        cmkdir(dpath)
+    build_dirs(cfg)
 
 
 # -----------------------------------------------------------------------------
@@ -43,11 +37,17 @@ def pyppi_version(**kw):
 
 # -----------------------------------------------------------------------------
 def conditional_debug(debug_option):
+def build_dirs(cfg):
     """
     Start the debugger if the debug option is True
+    Create the directories needed for the package index reflected by *pkg*
     """
     if debug_option:
         pdb.set_trace()
+    root = local(cfg['root'])
+    root.ensure_dir()
+    for pkg in cfg['pkglist']:
+        root.ensure_dir(pkg)
 
 
 # -----------------------------------------------------------------------------
