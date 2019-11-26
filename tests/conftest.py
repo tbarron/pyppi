@@ -76,3 +76,5 @@ def pytest_runtest_setup(item):
     if any([item.name in dbg_l,
             'all' in dbg_l] + [x in item.name for x in dbg_l]):
         pytest.dbgfunc = pdb.set_trace
+
+# ==TAGGABLE==

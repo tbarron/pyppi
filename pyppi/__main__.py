@@ -66,3 +66,5 @@ class pyppi_error(Exception):
 # -----------------------------------------------------------------------------
 if __name__ == "__main__":
     dispatch(__doc__)
+
+# ==TAGGABLE==
