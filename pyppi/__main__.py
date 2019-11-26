@@ -4,9 +4,11 @@ Usage:
     pyppi version [-d]
 """
 from docopt_dispatch import dispatch
+import os
 import pdb
-from pprint import pprint
+from pyppi import version
 import re
+import tbx
 
 
 # -----------------------------------------------------------------------------
