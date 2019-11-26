@@ -1,0 +1,9 @@
+--index-url https://tbarron.github.io/pypi
+--extra-index-url https://pypi.python.org/simple
+
+docopt-dispatch
+flake8
+pip>=19.3.1
+pytest
+pytest-cov
+tbx==1.1.6
