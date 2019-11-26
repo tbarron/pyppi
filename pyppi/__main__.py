@@ -71,6 +71,9 @@ def read_cfg_file(filename):
 
 # -----------------------------------------------------------------------------
 class pyppi_error(Exception):
+    """
+    Error class for errors in this program
+    """
     pass
 
 
