@@ -50,6 +50,18 @@ def test_function_doc():
 
 
 # -----------------------------------------------------------------------------
+def test_read_cfg_file(tmpdir, fx_cfgfile):
+    """
+    Call pmain.read_cfg_file on a config file and verify the struct returned
+    """
+    pytest.dbgfunc()
+    exp = fx_cfgfile
+    cfgfile = tmpdir.join("test.cfg")
+    cfg = pmain.read_cfg_file(cfgfile)                                # payload
+    assert cfg == exp
+
+
+# -----------------------------------------------------------------------------
 def test_version(capsys):
     """
     Check what the pyppi_version() function returns
@@ -60,6 +72,44 @@ def test_version(capsys):
     (result, err) = capsys.readouterr()
     assert "pyppi version" in result
     assert version._v in result
+
+
+# -----------------------------------------------------------------------------
+@pytest.fixture
+def fx_cfgfile(tmpdir):
+    """
+    Set up a config file we can test read_cfg_file on
+    """
+    urlpfx = "git+https://github.com/tbarron"
+    data = {'root': "{}/pypi".format(tmpdir.strpath),
+            'pkglist':
+            {'foobar': [{'version': "0.0.0",
+                         'url': "{}/foobar#egg=foobar-0.0.0".format(urlpfx)},
+                        {'version': "0.0.1",
+                         'url': "{}/foobar#egg=foobar-0.0.1".format(urlpfx)},
+                        ],
+             'tbx': [{'version': "0.1.0",
+                      'url': "{}/tbx#egg=tbx-0.1.0".format(urlpfx),
+                      'minpy': "3.8.0"},
+                     ],
+             'dtm': [{'version': "2.0.0",
+                      'url': "{}/dtm#egg=dtm-2.0.0".format(urlpfx)},
+                     ]}
+            }
+    tstcfg = tmpdir.join("test.cfg")
+    cfgs = "root       {}\n\n".format(data['root'])
+    pkg_l = data['pkglist']
+    for pkg in pkg_l:
+        cfgs += "package       {}\n".format(pkg)
+        for rel in pkg_l[pkg]:
+            cfgs += "    version   {}\n".format(rel['version'])
+            cfgs += "    url       {}\n".format(rel['url'])
+            if 'minpy' in rel:
+                cfgs += "    minpy     {}\n".format(rel['minpy'])
+        cfgs += "\n"
+
+    tstcfg.write(cfgs)
+    return data
 
 
 # -----------------------------------------------------------------------------
