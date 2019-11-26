@@ -4,7 +4,6 @@ Usage:
     pyppi version [-d]
 """
 from docopt_dispatch import dispatch
-import os
 import pdb
 from pyppi import version
 from py.path import local
@@ -36,14 +35,10 @@ def pyppi_version(**kw):
 
 
 # -----------------------------------------------------------------------------
-def conditional_debug(debug_option):
 def build_dirs(cfg):
     """
-    Start the debugger if the debug option is True
     Create the directories needed for the package index reflected by *pkg*
     """
-    if debug_option:
-        pdb.set_trace()
     root = local(cfg['root'])
     root.ensure_dir()
     for pkg in cfg['pkglist']:
@@ -51,8 +46,12 @@ def build_dirs(cfg):
 
 
 # -----------------------------------------------------------------------------
+def conditional_debug(debug_option):
     """
+    Start the debugger if the debug option is True
     """
+    if debug_option:
+        pdb.set_trace()
 
 
 # -----------------------------------------------------------------------------
