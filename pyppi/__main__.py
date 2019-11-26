@@ -15,12 +15,20 @@ def pyppi_build(**kw):
     """
     Build the package index from kw['FILENAME']
     """
-    if kw['d']:
-        pdb.set_trace()
+    conditional_debug(kw['d'])
     filename = kw['FILENAME']
-    print("Read config file {}".format(filename))
+    print("Reading config file {}".format(filename))
     cfg = read_cfg_file(filename)
-    pprint(cfg)
+
+    root = cfg['root']
+    cmkdir(root)
+
+    for pkg in cfg['pkglist']:
+        dpath = "{}/{}".format(cfg['root'], pkg)
+        print(dpath)
+        cmkdir(dpath)
+
+
 # -----------------------------------------------------------------------------
 @dispatch.on('version')
 def pyppi_version(**kw):
