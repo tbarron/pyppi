@@ -1,3 +1,5 @@
+from pyppi import version
+import pyppi.__main__ as pmain
 import glob
 import pytest
 import tbx
@@ -12,6 +14,19 @@ def test_flake():
     cmd = "flake8 --ignore $FLAKE_IGNORE {}".format(" ".join(files))
     result = tbx.run(tbx.expand(cmd))
     assert result == ""
+
+
+# -----------------------------------------------------------------------------
+def test_version(capsys):
+    """
+    Check what the pyppi_version() function returns
+    """
+    pytest.dbgfunc()
+    kw = {'build': False, 'd': False, 'FILENAME': None, 'version': True}
+    pmain.pyppi_version(**kw)                                         # payload
+    (result, err) = capsys.readouterr()
+    assert "pyppi version" in result
+    assert version._v in result
 
 
 def lglob(*args, dupl_allowed=False):
