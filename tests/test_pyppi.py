@@ -62,23 +62,11 @@ def test_read_cfg_file(tmpdir, fx_cfgfile):
 
 
 # -----------------------------------------------------------------------------
-def test_cmkdir(tmpdir):
     """
-    Verify behavior of cmkdir()
     """
     pytest.dbgfunc()
-    exists_dir = tmpdir.join("existing")
-    exists_dir.ensure(dir=True)
-    nosuch_dir = tmpdir.join("nosuch")
 
-    assert exists_dir.isdir()
-    assert not nosuch_dir.isdir()
 
-    assert pmain.cmkdir(nosuch_dir) is True                           # payload
-    assert pmain.cmkdir(exists_dir) is False                          # payload
-
-    assert exists_dir.isdir()
-    assert nosuch_dir.isdir()
 
 
 # -----------------------------------------------------------------------------
