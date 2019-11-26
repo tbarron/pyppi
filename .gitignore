@@ -2,3 +2,4 @@ pypi.cfg
 .env
 DODO
 venv*
+__pycache__
