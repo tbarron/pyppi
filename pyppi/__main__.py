@@ -1,6 +1,7 @@
 """
 Usage:
     pyppi build [-d] FILENAME
+    pyppi version [-d]
 """
 from docopt_dispatch import dispatch
 import pdb
@@ -20,6 +21,16 @@ def pyppi_build(**kw):
     print("Read config file {}".format(filename))
     cfg = read_cfg_file(filename)
     pprint(cfg)
+# -----------------------------------------------------------------------------
+@dispatch.on('version')
+def pyppi_version(**kw):
+    """
+    Report this program's version
+    """
+    conditional_debug(kw['d'])
+    print("pyppi version {}".format(version._v))
+
+
 
 
 # -----------------------------------------------------------------------------
