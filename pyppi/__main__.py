@@ -54,7 +54,7 @@ def read_cfg_file(filename):
             val = val.strip()
             if key == 'root':
                 if rval['root'] is None:
-                    rval['root'] = val
+                    rval['root'] = tbx.expand(val)
                 else:
                     raise pyppi_error("root was already set")
             elif key == 'package':
