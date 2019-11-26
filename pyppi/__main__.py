@@ -32,6 +32,15 @@ def pyppi_version(**kw):
 
 
 # -----------------------------------------------------------------------------
+def conditional_debug(debug_option):
+    """
+    Start the debugger if the debug option is True
+    """
+    if debug_option:
+        pdb.set_trace()
+
+
+# -----------------------------------------------------------------------------
 def cmkdir(path):
     """
     Conditional mkdir. If the path does not exist, create it. Return True if
