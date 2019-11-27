@@ -2,14 +2,16 @@
 This is free and unencumbered software released into the public domain.
 For more information, please visit <http://unlicense.org/>.
 """
-from pyppi import version
-from pyppi.__main__ import pyppi_error
-import pyppi.__main__ as pmain
 import glob
 from importlib import import_module
 import inspect
+from py.path import local as pypath
+from pyppi import version
+from pyppi.__main__ import pyppi_error
+import pyppi.__main__ as pmain
 import pytest
 import re
+import sys
 import tbx
 
 
