@@ -9,6 +9,7 @@ import glob
 from importlib import import_module
 import inspect
 import pytest
+import re
 import tbx
 
 
@@ -62,41 +63,48 @@ def test_pydoc():
     Run pydoc pyppi and look at what we get back
     """
     pytest.dbgfunc()
-    result = tbx.run("pydoc pyppi")
+    out = tbx.run("pydoc pyppi")
     exp_l = ["Build a python package index conforming to PEP 503",
              "pyppi build [-d] FILENAME",
-             "Build a python package index based on information in FILENAME",
+             "Build the python package index based on the contents ",
              "pyppi version [-d]",
-             "Report the version of the pyppi package",
+             "Report the pyppi version",
              ]
     for item in exp_l:
-        assert item in result
+        assert item in out
+    hl_out = tbx.run("python pyppi --help")
+    desc = re.findall("(DESCRIPTION.*)This is free", hl_out, re.DOTALL)
+    desc_l = [_ for _ in desc[0].split("\n") if not re.match(r"^\s*$", _)]
+    for line in desc_l:
+        assert line in out, "'{}' not in '{}'".format(line, out)
 
 
 # -----------------------------------------------------------------------------
-def test_help(capsys):
+def test_help():
     """
     Run 'pyppi help' and examine the output
     """
     pytest.dbgfunc()
     out = tbx.run("python pyppi help")
-    assert "Usage:" in out
+    assert "USAGE:" in out
     assert "    pyppi build [-d] FILENAME" in out
     assert "    pyppi version [-d]" in out
 
 
 # -----------------------------------------------------------------------------
-def test_help_long(capsys):
+def test_help_long():
     """
     Run 'pyppi --help' and examine the output
     """
     pytest.dbgfunc()
     out = tbx.run("python pyppi --help")
-    assert "Usage:" in out
+    assert "USAGE:" in out
     assert "    pyppi build [-d] FILENAME" in out
     assert "    pyppi version [-d]" in out
-    assert "    Build the package index based on" in out
+    assert "    Build the python package index based on" in out
     assert "    Report the pyppi version" in out
+    help_out = tbx.run("python pyppi help")
+    assert help_out in out
 
 
 # -----------------------------------------------------------------------------

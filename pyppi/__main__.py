@@ -3,9 +3,9 @@ USAGE:
     pyppi build [-d] FILENAME
     pyppi version [-d]
 
-DESCRIPTION:
+DESCRIPTION
     pyppi build [-d] FILENAME
-        Build the package index based on the contents of FILENAME.
+        Build the python package index based on the contents of FILENAME.
 
     pyppi version [-d]
         Report the pyppi version.
