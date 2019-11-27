@@ -166,6 +166,47 @@ def test_build_dirs_withroot(tmpdir, fx_cfgfile):
 
 
 # -----------------------------------------------------------------------------
+def test_index_html_root(tmpdir, fx_cfgfile):
+    """
+    Verify the creation of the root index.html
+    """
+    pytest.dbgfunc()
+    data = fx_cfgfile
+    pmain.build_dirs(data)
+    pmain.index_html_root(data)                                       # payload
+    expfile = pypath(data['root']).join("index.html")
+    assert expfile.exists()
+    assert "<!DOCTYPE html>" in expfile.read()
+    base = tbx.basename(data['root'])
+    for pkgname in data['pkglist']:
+        assert "/{}/{}/".format(base, pkgname) in expfile.read()
+
+
+# -----------------------------------------------------------------------------
+def test_index_html_package(tmpdir, fx_cfgfile):
+    """
+    Verify the creation of the package index.html files
+    """
+    pytest.dbgfunc()
+    cfg = fx_cfgfile
+    pmain.build_dirs(cfg)
+    pmain.index_html_root(cfg)
+    pkg_d = cfg['pkglist']
+    for pkgname in pkg_d:
+        pkg = pkg_d[pkgname]
+        pmain.index_html_package(cfg['root'], pkgname, pkg)           # payload
+
+    for pkgname in pkg_d:
+        expfile = pypath(cfg['root']).join(pkgname, "index.html")
+        assert "<!DOCTYPE html>" in expfile.read()
+        for release in pkg_d[pkgname]:
+            assert release['url'] in expfile.read()
+            assert release['version'] in expfile.read()
+            if 'minpy' in release:
+                assert release['minpy'] in expfile.read()
+
+
+# -----------------------------------------------------------------------------
 def test_version(capsys):
     """
     Check what the pyppi_version() function returns
