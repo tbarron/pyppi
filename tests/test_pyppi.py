@@ -144,7 +144,7 @@ def test_build_dirs_noroot(tmpdir, fx_cfgfile):
     assert not root.exists()
     pmain.build_dirs(data)                                            # payload
     assert root.exists()
-    for pkg in data['pkglist']:
+    for pkg in data['packages']:
         pkgdir = root.join(pkg)
         assert pkgdir.isdir()
 
@@ -160,7 +160,7 @@ def test_build_dirs_withroot(tmpdir, fx_cfgfile):
     root.ensure(dir=True)
     pmain.build_dirs(data)                                            # payload
     assert root.isdir()
-    for pkg in data['pkglist']:
+    for pkg in data['packages']:
         pkgdir = root.join(pkg)
         assert pkgdir.isdir()
 
@@ -174,7 +174,7 @@ def test_build_index_htmls(tmpdir, fx_cfgfile):
     pytest.dbgfunc()
     cfg = fx_cfgfile
     root = pypath(cfg['root'])
-    pkg_d = cfg['pkglist']
+    pkg_d = cfg['packages']
     pmain.build_dirs(cfg)
     pmain.build_index_htmls(cfg)                                      # payload
 
@@ -276,7 +276,7 @@ def fx_cfgfile(tmpdir):
     """
     urlpfx = "git+https://github.com/tbarron"
     data = {'root': "{}/pypi".format(tmpdir.strpath),
-            'pkglist':
+            'packages':
             {'foobar': [{'version': "0.0.0",
                          'url': "{}/foobar#egg=foobar-0.0.0".format(urlpfx)},
                         {'version': "0.0.1",
@@ -292,7 +292,7 @@ def fx_cfgfile(tmpdir):
             }
     tstcfg = tmpdir.join("test.cfg")
     cfgs = "root       {}\n\n".format(data['root'])
-    pkg_l = data['pkglist']
+    pkg_l = data['packages']
     for pkg in pkg_l:
         cfgs += "package       {}\n".format(pkg)
         for rel in pkg_l[pkg]:

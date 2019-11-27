@@ -52,7 +52,7 @@ def build_dirs(cfg):
     """
     root = local(cfg['root'])
     root.ensure_dir()
-    for pkg in cfg['pkglist']:
+    for pkg in cfg['packages']:
         root.ensure_dir(pkg)
 
 
@@ -62,7 +62,7 @@ def build_index_htmls(cfg):
     Write an index.html file for root and for each package
     """
     index_html_root(cfg)
-    pkg_d = cfg['pkglist']
+    pkg_d = cfg['packages']
     for pkg in pkg_d:
         index_html_package(cfg['root'], pkg, pkg_d[pkg])
 
@@ -78,7 +78,7 @@ def index_html_root(cfg):
     payload = ("<!DOCTYPE html>\n"
                "<html>\n"
                "  <body>\n")
-    pkg_l = cfg['pkglist']
+    pkg_l = cfg['packages']
     for pkg in pkg_l:
         payload += "    <a href=\"/{}/{}/\">{}</a>\n".format(cfg['root'],
                                                              pkg,
@@ -124,7 +124,7 @@ def read_cfg_file(filename):
     Load config data from *filename*
     """
     rval = {'root': None,
-            'pkglist': {}}
+            'packages': {}}
     with open(filename, 'r') as rbl:
         cpkg = None
         for line in rbl:
@@ -143,8 +143,8 @@ def read_cfg_file(filename):
                 else:
                     raise pyppi_error("root was already set")
             elif key == 'package':
-                rval['pkglist'][val] = []
-                cpkg = rval['pkglist'][val]
+                rval['packages'][val] = []
+                cpkg = rval['packages'][val]
             elif key == 'version':
                 cpkg.append({'version': val})
             elif key == 'url':
