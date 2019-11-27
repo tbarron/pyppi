@@ -32,6 +32,7 @@ def pyppi_build(**kw):                                       # pragma: no cover
     print("Reading config file {}".format(filename))
     cfg = read_cfg_file(filename)
     build_dirs(cfg)
+    build_index_htmls(cfg)
 
 
 # -----------------------------------------------------------------------------
@@ -53,6 +54,59 @@ def build_dirs(cfg):
     root.ensure_dir()
     for pkg in cfg['pkglist']:
         root.ensure_dir(pkg)
+
+
+# -----------------------------------------------------------------------------
+def build_index_htmls(cfg):
+    """
+    Write an index.html file for root and for each package
+    """
+    index_html_root(cfg)
+    pkg_d = cfg['pkglist']
+    for pkg in pkg_d:
+        index_html_package(cfg['root'], pkg, pkg_d[pkg])
+
+
+# -----------------------------------------------------------------------------
+def index_html_root(cfg):
+    """
+    Write the root package index.html
+    """
+    root = local(cfg['root'])
+    target = root.join("index.html")
+    print("writing file {}".format(target.strpath))
+    payload = ("<!DOCTYPE html>\n"
+               "<html>\n"
+               "  <body>\n")
+    pkg_l = cfg['pkglist']
+    for pkg in pkg_l:
+        payload += "    <a href=\"/{}/{}/\">{}</a>\n".format(cfg['root'],
+                                                             pkg,
+                                                             pkg)
+    payload += ("  </body>\n"
+                "</html>\n")
+    target.write(payload)
+
+
+# -----------------------------------------------------------------------------
+def index_html_package(root, pkgname, pkg_l):
+    """
+    Write an index.html for each package in cfg
+    """
+    target = local("{}/{}/index.html".format(root, pkgname))
+    print("writing file {}".format(target.strpath))
+    payload = ("<!DOCTYPE html>\n"
+               "<html>\n"
+               "  <body>\n")
+    for release in pkg_l:
+        payload += "    <a href=\"{}\"".format(release['url'])
+        if 'minpy' in release:
+            payload += " {}=\"&gt;={}\"".format("data-requires-python",
+                                                release['minpy'])
+        payload += ">{}-{}</a>\n".format(pkgname, release['version'])
+    payload += ("  </body>\n"
+                "</html>\n")
+    target.write(payload)
 
 
 # -----------------------------------------------------------------------------
