@@ -207,6 +207,23 @@ def test_index_html_package(tmpdir, fx_cfgfile):
 
 
 # -----------------------------------------------------------------------------
+def test_debuggable():
+    """
+    """
+    pytest.dbgfunc()
+    rval = ""
+    func_d = dict(inspect.getmembers(sys.modules['test_pyppi'],
+                                     inspect.isfunction))
+    for func in func_d:
+        if func.startswith('test_'):
+            mem_d = dict(inspect.getmembers(func_d[func]))
+            cobj = mem_d['__code__']
+            if 'dbgfunc' not in cobj.co_names:
+                rval += "    {}\n".format(func)
+    assert rval == ""
+
+
+# -----------------------------------------------------------------------------
 def test_version(capsys):
     """
     Check what the pyppi_version() function returns
