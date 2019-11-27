@@ -52,6 +52,49 @@ def test_function_doc():
 
 
 # -----------------------------------------------------------------------------
+def test_pydoc():
+    """
+    Run pydoc pyppi and look at what we get back
+    """
+    pytest.dbgfunc()
+    result = tbx.run("pydoc pyppi")
+    exp_l = ["Build a python package index conforming to PEP 503",
+             "pyppi build [-d] FILENAME",
+             "Build a python package index based on information in FILENAME",
+             "pyppi version [-d]",
+             "Report the version of the pyppi package",
+             ]
+    for item in exp_l:
+        assert item in result
+
+
+# -----------------------------------------------------------------------------
+def test_help(capsys):
+    """
+    Run 'pyppi help' and examine the output
+    """
+    pytest.dbgfunc()
+    out = tbx.run("python pyppi help")
+    assert "Usage:" in out
+    assert "    pyppi build [-d] FILENAME" in out
+    assert "    pyppi version [-d]" in out
+
+
+# -----------------------------------------------------------------------------
+def test_help_long(capsys):
+    """
+    Run 'pyppi --help' and examine the output
+    """
+    pytest.dbgfunc()
+    out = tbx.run("python pyppi --help")
+    assert "Usage:" in out
+    assert "    pyppi build [-d] FILENAME" in out
+    assert "    pyppi version [-d]" in out
+    assert "    Build the package index based on" in out
+    assert "    Report the pyppi version" in out
+
+
+# -----------------------------------------------------------------------------
 def test_read_cfg_file(tmpdir, fx_cfgfile):
     """
     Call pmain.read_cfg_file on a config file and verify the struct returned
