@@ -166,44 +166,32 @@ def test_build_dirs_withroot(tmpdir, fx_cfgfile):
 
 
 # -----------------------------------------------------------------------------
-def test_index_html_root(tmpdir, fx_cfgfile):
+def test_build_index_htmls(tmpdir, fx_cfgfile):
     """
-    Verify the creation of the root index.html
-    """
-    pytest.dbgfunc()
-    data = fx_cfgfile
-    pmain.build_dirs(data)
-    pmain.index_html_root(data)                                       # payload
-    expfile = pypath(data['root']).join("index.html")
-    assert expfile.exists()
-    assert "<!DOCTYPE html>" in expfile.read()
-    base = tbx.basename(data['root'])
-    for pkgname in data['pkglist']:
-        assert "/{}/{}/".format(base, pkgname) in expfile.read()
-
-
-# -----------------------------------------------------------------------------
-def test_index_html_package(tmpdir, fx_cfgfile):
-    """
-    Verify the creation of the package index.html files
+    After calling build_index_htmls(), verify that the expected files exist and
+    have (approximately) the right content
     """
     pytest.dbgfunc()
     cfg = fx_cfgfile
-    pmain.build_dirs(cfg)
-    pmain.index_html_root(cfg)
+    root = pypath(cfg['root'])
     pkg_d = cfg['pkglist']
-    for pkgname in pkg_d:
-        pkg = pkg_d[pkgname]
-        pmain.index_html_package(cfg['root'], pkgname, pkg)           # payload
+    pmain.build_dirs(cfg)
+    pmain.build_index_htmls(cfg)                                      # payload
 
+    rootidx = root.join("index.html")
+    assert rootidx.exists()
+    assert "<!DOCTYPE html>" in rootidx.read()
+    base = root.basename
     for pkgname in pkg_d:
-        expfile = pypath(cfg['root']).join(pkgname, "index.html")
-        assert "<!DOCTYPE html>" in expfile.read()
+        assert "/{}/{}/".format(base, pkgname) in rootidx.read()
+
+        pkgidx = root.join(pkgname, "index.html")
+        assert "<!DOCTYPE html>" in pkgidx.read()
         for release in pkg_d[pkgname]:
-            assert release['url'] in expfile.read()
-            assert release['version'] in expfile.read()
+            assert release['url'] in pkgidx.read()
+            assert release['version'] in pkgidx.read()
             if 'minpy' in release:
-                assert release['minpy'] in expfile.read()
+                assert release['minpy'] in pkgidx.read()
 
 
 # -----------------------------------------------------------------------------
