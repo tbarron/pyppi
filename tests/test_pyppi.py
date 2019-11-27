@@ -46,7 +46,7 @@ def test_function_doc():
                 missing_doc.append(name)
 
             for mthname, mthobj in inspect.getmembers(obj, inspect.isfunction):
-                if name == 'local':
+                if name in ['pypath', 'local']:
                     continue
                 if doc_missing(mthobj) and mthname not in missing_doc:
                     missing_doc.append("{}.{}".format(name, mthname))
