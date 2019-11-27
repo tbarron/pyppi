@@ -8,4 +8,7 @@ pyppi build [-d] FILENAME
 pyppi version [-d]
 
     Report the version of the pyppi package.
+
+This is free and unencumbered software released into the public domain.
+For more information, please visit <http://unlicense.org/>.
 """

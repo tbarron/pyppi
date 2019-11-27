@@ -1,3 +1,7 @@
+"""
+This is free and unencumbered software released into the public domain.
+For more information, please visit <http://unlicense.org/>.
+"""
 from pyppi import version
 try:
     from setuptools import setup

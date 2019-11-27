@@ -20,3 +20,6 @@ a python package index that conforms to PEP 503 (Simple Repository API).
   * The minpy entry is optional and may be omitted. If present, it will
     generate a "data-requires-python" attribute on the anchor for the
     release.
+
+  * This is free and unencumbered software released into the public domain.
+    For more information, please visit <http://unlicense.org/>.

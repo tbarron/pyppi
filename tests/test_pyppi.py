@@ -1,3 +1,7 @@
+"""
+This is free and unencumbered software released into the public domain.
+For more information, please visit <http://unlicense.org/>.
+"""
 from pyppi import version
 from pyppi.__main__ import pyppi_error
 import pyppi.__main__ as pmain
