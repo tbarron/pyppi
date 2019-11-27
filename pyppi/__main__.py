@@ -2,6 +2,12 @@
 Usage:
     pyppi build [-d] FILENAME
     pyppi version [-d]
+
+pyppi build [-d] FILENAME
+    Build the package index based on the contents of FILENAME.
+
+pyppi version [-d]
+    Report the pyppi version.
 """
 from docopt_dispatch import dispatch
 import pdb
@@ -13,7 +19,7 @@ import tbx
 
 # -----------------------------------------------------------------------------
 @dispatch.on('build')
-def pyppi_build(**kw):
+def pyppi_build(**kw):                                       # pragma: no cover
     """
     Build the package index from kw['FILENAME']
     """
@@ -46,7 +52,7 @@ def build_dirs(cfg):
 
 
 # -----------------------------------------------------------------------------
-def conditional_debug(debug_option):
+def conditional_debug(debug_option):                         # pragma: no cover
     """
     Start the debugger if the debug option is True
     """
@@ -99,7 +105,7 @@ class pyppi_error(Exception):
 
 
 # -----------------------------------------------------------------------------
-if __name__ == "__main__":
+if __name__ == "__main__":                                   # pragma: no cover
     dispatch(__doc__)
 
 # ==TAGGABLE==
