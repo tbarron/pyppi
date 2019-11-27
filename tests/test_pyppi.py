@@ -197,6 +197,7 @@ def test_build_index_htmls(tmpdir, fx_cfgfile):
 # -----------------------------------------------------------------------------
 def test_debuggable():
     """
+    Verify that all functions have a __doc__
     """
     pytest.dbgfunc()
     rval = ""
