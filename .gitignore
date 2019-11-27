@@ -4,3 +4,4 @@ venv*
 TAGS
 .env
 __pycache__
+.coverage*
