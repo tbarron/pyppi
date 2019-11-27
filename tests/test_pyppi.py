@@ -1,4 +1,5 @@
 from pyppi import version
+from pyppi.__main__ import pyppi_error
 import pyppi.__main__ as pmain
 import glob
 from importlib import import_module
@@ -107,6 +108,18 @@ def test_read_cfg_file(tmpdir, fx_cfgfile):
 
 
 # -----------------------------------------------------------------------------
+def test_read_cfg_extra_root(tmpdir, fx_extra_root):
+    """
+    Call pmain.read_cfg_file on a config file and verify the struct returned
+    """
+    pytest.dbgfunc()
+    cfgfile = tmpdir.join("test.cfg")
+    with pytest.raises(pyppi_error) as err:
+        pmain.read_cfg_file(cfgfile)                                  # payload
+    assert "root was already set" in str(err.value)
+
+
+# -----------------------------------------------------------------------------
 def test_build_dirs_noroot(tmpdir, fx_cfgfile):
     """
     Make sure function build_dirs() creates the root directory
@@ -149,6 +162,25 @@ def test_version(capsys):
     (result, err) = capsys.readouterr()
     assert "pyppi version" in result
     assert version._v in result
+
+
+# -----------------------------------------------------------------------------
+@pytest.fixture
+def fx_extra_root(tmpdir):
+    """
+    Set up a config file with an extra root line to trigger the exception
+    """
+    lines = ["root            foobar",
+             "",
+             "package         whatever",
+             "    version     0.0.0",
+             "    url         git+https://someplace.com/foobar/foobar/",
+             "",
+             "root            throwthatexception",
+             "",
+             ]
+    tstcfg = tmpdir.join("test.cfg")
+    tstcfg.write("\n".join(lines) + "\n")
 
 
 # -----------------------------------------------------------------------------
