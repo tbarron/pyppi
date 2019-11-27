@@ -322,7 +322,9 @@ def doc_missing(obj):
     """
     Check *obj* for a non-empty __doc__ element
     """
-    if not hasattr(obj, '__doc__') or obj.__doc__ is None:
+    if any([not hasattr(obj, '__doc__'),
+            obj.__doc__ is None,
+            obj.__doc__.strip() == ""]):
         return True
     else:
         return False
