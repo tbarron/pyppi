@@ -1,13 +1,15 @@
 """
-Usage:
+USAGE:
     pyppi build [-d] FILENAME
     pyppi version [-d]
 
-pyppi build [-d] FILENAME
-    Build the package index based on the contents of FILENAME.
+DESCRIPTION:
+    pyppi build [-d] FILENAME
+        Build the package index based on the contents of FILENAME.
 
-pyppi version [-d]
-    Report the pyppi version.
+    pyppi version [-d]
+        Report the pyppi version.
+
 This is free and unencumbered software released into the public domain.
 For more information, please visit <http://unlicense.org/>.
 """
