@@ -290,15 +290,16 @@ def make_test_cfg(tmpdir, colons=False):
                       'url': "{}/dtm#egg=dtm-2.0.0".format(urlpfx)},
                      ]}
             }
-    cfgs = "root       {}\n\n".format(data['root'])
+    colchr = ";" if colons else ""
+    cfgs = "root{}       {}\n\n".format(colchr, data['root'])
     pkg_l = data['packages']
     for pkg in pkg_l:
-        cfgs += "package       {}\n".format(pkg)
+        cfgs += "package{}       {}\n".format(colchr, pkg)
         for rel in pkg_l[pkg]:
-            cfgs += "    version   {}\n".format(rel['version'])
-            cfgs += "    url       {}\n".format(rel['url'])
+            cfgs += "    version{}   {}\n".format(colchr, rel['version'])
+            cfgs += "    url{}       {}\n".format(colchr, rel['url'])
             if 'minpy' in rel:
-                cfgs += "    minpy     {}\n".format(rel['minpy'])
+                cfgs += "    minpy{}     {}\n".format(colchr, rel['minpy'])
         cfgs += "\n"
 
     data['tstcfg'].write(cfgs)
