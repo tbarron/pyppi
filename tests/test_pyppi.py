@@ -116,7 +116,8 @@ def test_read_cfg_file(tmpdir, fx_cfgfile):
     """
     pytest.dbgfunc()
     exp = fx_cfgfile
-    cfgfile = tmpdir.join("test.cfg")
+    cfgfile = exp['tstcfg']
+    del exp['tstcfg']
     cfg = pmain.read_cfg_file(cfgfile)                                # payload
     assert cfg == exp
 
