@@ -123,6 +123,19 @@ def test_read_cfg_file(tmpdir, fx_cfgfile):
 
 
 # -----------------------------------------------------------------------------
+def test_read_cfg_colons(tmpdir, fx_colons):
+    """
+    Colons in config file cause downstream failures, so we want to catch them
+    early
+    """
+    pytest.dbgfunc()
+    cfgfile = fx_colons['tstcfg']
+    with pytest.raises(pyppi_error) as err:
+        pmain.read_cfg_file(cfgfile)                                  # payload
+    assert "Syntax error in config file: colons not allowed" in str(err.value)
+
+
+# -----------------------------------------------------------------------------
 def test_read_cfg_extra_root(tmpdir, fx_extra_root):
     """
     Call pmain.read_cfg_file on a config file and verify the struct returned
