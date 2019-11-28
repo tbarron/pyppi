@@ -1,11 +1,26 @@
 """
 USAGE:
     pyppi build [-d] FILENAME
+    pyppi cpush [-d] -m MESSAGE FILENAME
     pyppi version [-d]
+
+OPTIONS:
+    -m MESSAGE      Specify MESSAGE for git commit
 
 DESCRIPTION
     pyppi build [-d] FILENAME
         Build the python package index based on the contents of FILENAME.
+
+    pyppi cpush [-d] -m MESSAGE FILENAME
+        if mtime(root/*/index.html) < mtime(FILENAME):
+            build
+        if any files staged,
+            complain and die
+        if none of root/*/index.html pending:
+            complain and die
+        git add root/*/index.html
+        git commit -m MESSAGE
+        git push
 
     pyppi version [-d]
         Report the pyppi version.
@@ -18,6 +33,7 @@ import pdb
 from pyppi import version
 from py.path import local as pypath
 import re
+import shutil
 import tbx
 
 
@@ -41,6 +57,99 @@ def pyppi_build(**kw):                                       # pragma: no cover
     cfg = read_cfg_file(filename)
     build_dirs(cfg)
     build_index_htmls(cfg)
+
+
+# -----------------------------------------------------------------------------
+@dispatch.on('cpush')
+def pyppi_cpush(**kw):
+    """
+    if mtime(root/*/index.html) < mtime(FILENAME):
+        build
+    if any non pypi files staged,
+        complain and die
+    if none of root/*/index.html pending:
+        complain and die
+    git add root/*/index.html
+    git commit -m MESSAGE
+    git push
+    """
+    conditional_debug(kw['d'])
+    filename = kw['FILENAME']
+    cfg = read_cfg_file(filename)
+    if index_out_of_date(filename, cfg):
+        shutil.rmtree(cfg['root'])
+        build_dirs(cfg)
+        build_index_htmls(cfg)
+
+    (untracked, unstaged, uncommitted) = tbx.git_status()
+    others = [_ for _ in uncommitted
+              if root not in _ or 'index.html' not in _]
+    if others:
+        sys.exit("You have files staged. Please commit them and try again.")
+
+    taddables = [_ for _ in untracked if root in _ and 'index.html' in _]
+    saddables = [_ for _ in unstaged if root in _ and 'index.html' in _]
+    addables = taddables + saddables
+    if len(addables) == 0:
+        sys.exit("No pypi index.html files are unstaged")
+    else:
+        git_add(addables)
+
+    git_commit(message=kw['m'])
+    git_push()
+
+
+# -----------------------------------------------------------------------------
+def index_out_of_date(filename, cfg):
+    """
+    Return True if mtime(filename) is later than mtime(any index.html under
+    root)
+    """
+    rval = False
+    cfgfile = pypath(filename)
+    root = cfg['root']
+    idxhtml_l = [pypath("{}/index.html".format(root))]
+    pkg_d = cfg['packages']
+    for pkg in pkg_d:
+        path = "{}/{}/index.html".format(root, pkg)
+        idxhtml_l.append(pypath(path))
+
+    for idxh in idxhtml_l:
+        if not idxh.exists():
+            rval = True
+            break
+        elif idxh.mtime() < cfgfile.mtime():
+            rval = True
+            break
+
+    return rval
+
+
+# -----------------------------------------------------------------------------
+def git_add(addables):
+    """
+    Run 'git add' on the group of paths in *addables*
+    """
+    addable_list = " ".join(addables)
+    cmd = "git add {}".format(addable_list)
+    tbx.run(cmd)
+
+
+# -----------------------------------------------------------------------------
+def git_commit(message=""):
+    """
+    Run 'git commit' with *message*
+    """
+    cmd = "git commit -m \"{}\"".format(message)
+    tbx.run(cmd)
+
+
+# -----------------------------------------------------------------------------
+def git_push():
+    """
+    Run 'git push'
+    """
+    tbx.run("git push")
 
 
 # -----------------------------------------------------------------------------
