@@ -16,7 +16,7 @@ For more information, please visit <http://unlicense.org/>.
 from docopt_dispatch import dispatch
 import pdb
 from pyppi import version
-from py.path import local
+from py.path import local as pypath
 import re
 import tbx
 
@@ -58,7 +58,7 @@ def build_dirs(cfg):
     """
     Create the directories needed for the package index reflected by *pkg*
     """
-    root = local(cfg['root'])
+    root = pypath(cfg['root'])
     root.ensure_dir()
     for pkg in cfg['packages']:
         root.ensure_dir(pkg)
@@ -80,7 +80,7 @@ def index_html_root(cfg):
     """
     Write the root package index.html
     """
-    root = local(cfg['root'])
+    root = pypath(cfg['root'])
     target = root.join("index.html")
     print("writing file {}".format(target.strpath))
     payload = ("<!DOCTYPE html>\n"
@@ -101,7 +101,7 @@ def index_html_package(root, pkgname, pkg_l):
     """
     Write an index.html for each package in cfg
     """
-    target = local("{}/{}/index.html".format(root, pkgname))
+    target = pypath("{}/{}/index.html".format(root, pkgname))
     print("writing file {}".format(target.strpath))
     payload = ("<!DOCTYPE html>\n"
                "<html>\n"
