@@ -1,3 +1,15 @@
+## 0.0.2 ... 2019-11-28 16:48:07
+
+ * Set 3.6.9 as the minimum supported python version
+ * Arrange to call pyppi directly as an executable, not invoking a module with
+   the python executable
+ * We need to catch colons if they are in the config file separating keys and
+   values -- added test and payload for this.
+ * Add function cpush: if any of the pypi index.html files are out of date with
+   respect to the config file, rebuild. Then stage any outstanding index.html
+   files, git commit them, and git push to update the active index up at github.
+
+
 ## 0.0.1 ... 2019-11-27 16:01:20
 
  * Project inception
