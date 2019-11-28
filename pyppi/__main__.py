@@ -22,6 +22,14 @@ import tbx
 
 
 # -----------------------------------------------------------------------------
+def main():
+    """
+    Main entry point
+    """
+    dispatch(__doc__)
+
+
+# -----------------------------------------------------------------------------
 @dispatch.on('build')
 def pyppi_build(**kw):                                       # pragma: no cover
     """
@@ -160,10 +168,5 @@ class pyppi_error(Exception):
     Error class for errors in this program
     """
     pass
-
-
-# -----------------------------------------------------------------------------
-if __name__ == "__main__":                                   # pragma: no cover
-    dispatch(__doc__)
 
 # ==TAGGABLE==
