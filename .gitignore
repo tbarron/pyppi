@@ -5,3 +5,5 @@ TAGS
 .env
 __pycache__
 .coverage*
+.project
+*.egg-info/
