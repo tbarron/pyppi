@@ -304,7 +304,7 @@ def make_test_cfg(tmpdir, colons=False):
                       'url': "{}/dtm#egg=dtm-2.0.0".format(urlpfx)},
                      ]}
             }
-    colchr = ";" if colons else ""
+    colchr = ":" if colons else ""
     cfgs = "root{}       {}\n\n".format(colchr, data['root'])
     pkg_l = data['packages']
     for pkg in pkg_l:
