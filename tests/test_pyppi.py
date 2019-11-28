@@ -269,8 +269,7 @@ def fx_extra_root(tmpdir):
 
 
 # -----------------------------------------------------------------------------
-@pytest.fixture
-def fx_cfgfile(tmpdir):
+def make_test_cfg(tmpdir, colons=False):
     """
     Set up a config file we can test read_cfg_file on
     """
@@ -304,6 +303,24 @@ def fx_cfgfile(tmpdir):
 
     tstcfg.write(cfgs)
     return data
+
+
+# -----------------------------------------------------------------------------
+@pytest.fixture
+def fx_cfgfile(tmpdir):
+    """
+    Set up a config file we can test read_cfg_file on
+    """
+    return make_test_cfg(tmpdir, colons=False)
+
+
+# -----------------------------------------------------------------------------
+@pytest.fixture
+def fx_colons(tmpdir):
+    """
+    Set up a config file we can test read_cfg_file on with colons
+    """
+    return make_test_cfg(tmpdir, colons=True)
 
 
 # -----------------------------------------------------------------------------
