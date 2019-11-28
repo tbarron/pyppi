@@ -27,4 +27,5 @@ setup(
     ],
     url="... update this ...",
     download_url="... update this ...",
+    python_requires='>=3.6.9',
 )
