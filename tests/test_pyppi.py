@@ -74,7 +74,7 @@ def test_pydoc():
              ]
     for item in exp_l:
         assert item in out
-    hl_out = tbx.run("python pyppi --help")
+    hl_out = tbx.run("pyppi --help")
     desc = re.findall("(DESCRIPTION.*)This is free", hl_out, re.DOTALL)
     desc_l = [_ for _ in desc[0].split("\n") if not re.match(r"^\s*$", _)]
     for line in desc_l:
@@ -87,7 +87,7 @@ def test_help():
     Run 'pyppi help' and examine the output
     """
     pytest.dbgfunc()
-    out = tbx.run("python pyppi help")
+    out = tbx.run("pyppi help")
     assert "USAGE:" in out
     assert "    pyppi build [-d] FILENAME" in out
     assert "    pyppi version [-d]" in out
@@ -99,7 +99,7 @@ def test_help_long():
     Run 'pyppi --help' and examine the output
     """
     pytest.dbgfunc()
-    out = tbx.run("python pyppi --help")
+    out = tbx.run("pyppi --help")
     assert "USAGE:" in out
     assert "    pyppi build [-d] FILENAME" in out
     assert "    pyppi version [-d]" in out
