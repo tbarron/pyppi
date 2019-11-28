@@ -275,6 +275,7 @@ def make_test_cfg(tmpdir, colons=False):
     """
     urlpfx = "git+https://github.com/tbarron"
     data = {'root': "{}/pypi".format(tmpdir.strpath),
+            'tstcfg': tmpdir.join("test.cfg"),
             'packages':
             {'foobar': [{'version': "0.0.0",
                          'url': "{}/foobar#egg=foobar-0.0.0".format(urlpfx)},
@@ -289,7 +290,6 @@ def make_test_cfg(tmpdir, colons=False):
                       'url': "{}/dtm#egg=dtm-2.0.0".format(urlpfx)},
                      ]}
             }
-    tstcfg = tmpdir.join("test.cfg")
     cfgs = "root       {}\n\n".format(data['root'])
     pkg_l = data['packages']
     for pkg in pkg_l:
@@ -301,7 +301,7 @@ def make_test_cfg(tmpdir, colons=False):
                 cfgs += "    minpy     {}\n".format(rel['minpy'])
         cfgs += "\n"
 
-    tstcfg.write(cfgs)
+    data['tstcfg'].write(cfgs)
     return data
 
 
