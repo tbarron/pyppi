@@ -143,6 +143,9 @@ def read_cfg_file(filename):
             if re.match(r"^\s*$", line):
                 continue
             (key, val) = line.split()
+            if ':' in key:
+                msg = "Syntax error in config file: colons not allowed"
+                raise pyppi_error(msg)
             key = key.strip()
             val = val.strip()
             if key == 'root':
