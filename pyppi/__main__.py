@@ -34,6 +34,7 @@ from pyppi import version
 from py.path import local as pypath
 import re
 import shutil
+import sys
 import tbx
 
 
@@ -81,6 +82,7 @@ def pyppi_cpush(**kw):
         build_dirs(cfg)
         build_index_htmls(cfg)
 
+    root = cfg['root']
     (untracked, unstaged, uncommitted) = tbx.git_status()
     others = [_ for _ in uncommitted
               if root not in _ or 'index.html' not in _]
