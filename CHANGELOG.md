@@ -1,3 +1,7 @@
+## 0.0.3 ... 2019-11-28 21:12:12
+
+ * Fixed issues with cpush
+
 ## 0.0.2 ... 2019-11-28 16:48:07
 
  * Set 3.6.9 as the minimum supported python version
